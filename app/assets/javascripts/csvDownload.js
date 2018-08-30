@@ -6,6 +6,11 @@ PT.downloadCsv = function(serverResponse){
   var a = document.createElement('a');
   var csvString = "";
 
+  //Write separator if Windowns OS
+  if(navigator.appVersion.indexOf("Win")!=-1){
+    csvString += "sep=,";
+  }
+
   //Write title & prompts
   csvString += survey.title + "\n";
   csvString += '"Date of submission","Location of submission (lat lon)",';
