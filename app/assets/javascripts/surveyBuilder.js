@@ -30,6 +30,7 @@ PT.Input = function(){
   self.options = ko.observableArray([{label: I18n.t("surveys.survey_builder.option_1"), jump_to: null}]);
   self.order = "";
   self.inEdit = ko.observable(true);
+  self.jump_to = null;
 
   self.validate = function(){
     var inputEl = $("#input" + self.id());

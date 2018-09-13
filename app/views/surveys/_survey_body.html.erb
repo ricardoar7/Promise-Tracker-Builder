@@ -75,6 +75,16 @@
           </div>
         </div>
 
+        <div class="row something" data-bind="visible: input_type() != 'select' && input_type() != 'select1'">
+          <div class="col-md-3 label-text">
+            <%= t(".jump_to") %>:
+          </div>
+          <div class="col-md-9">
+            <select class="form-control short inline" data-bind="options: PT.buildJumpToArray(PT.selectedInput()), optionsValue: function(item) {return item.id}, optionsText: function(item) {return item.label;}, optionsCaption: I18n.t('surveys.survey_body.select_question'), value: jump_to, event: { change: function() { highlightActiveJumps($data, event) } }">
+            </select>
+          </div>
+        </div>
+
         <div class="row required" data-bind="visible: input_type() != 'note'">
           <div class="col-md-3"></div>
           <div class="col-md-9">
@@ -118,6 +128,8 @@
           <p data-bind="visible: input_type() == 'image'">
             <span class="glyphicon glyphicon-picture"></span>
           </p>
+          <br>
+          <p class="inline jump-to" data-bind="visible: jump_to"><%= t(".jump-to") %>: <span data-bind="text: jump_to ? PT.survey.getLabelById(jump_to) : false, valueUpdate:'input'"></span></p>
         </div>
         <p class="subtle required-input" data-bind="visible: required()">
           * <%= t(".required") %>
