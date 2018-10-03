@@ -31,6 +31,7 @@ PT.Input = function(){
   self.order = "";
   self.inEdit = ko.observable(true);
   self.jump_to = null;
+  self.came_from = null;
 
   self.validate = function(){
     var inputEl = $("#input" + self.id());
