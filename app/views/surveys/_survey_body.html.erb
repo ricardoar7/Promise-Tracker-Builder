@@ -75,7 +75,7 @@
           </div>
         </div>
 
-        <div class="row something" data-bind="visible: input_type() != 'select' && input_type() != 'select1'">
+        <div class="row something" data-bind="visible: came_from() != '' && input_type() != 'select' && input_type() != 'select1'">
           <div class="col-md-3 label-text">
             <%= t(".jump_to") %>:
           </div>
@@ -109,6 +109,7 @@
           <span class="jump-to glyphicon glyphicon-random active" data-bind="visible: options()[0] && options()[0].jump_to"></span>
         </div>
 
+        <p class="inline came-from" data-bind="text: $data.came_from" class="label-text"></p>
         <p data-bind="text: $data.label" class="label-text"></p>
         <div class="example" data-bind="css: input_type">
           <div class="options" data-bind="visible: input_type() === 'select' || input_type() === 'select1'">
@@ -129,7 +130,7 @@
             <span class="glyphicon glyphicon-picture"></span>
           </p>
           <br>
-          <p class="inline jump-to" data-bind="visible: jump_to"><%= t(".jump-to") %>: <span data-bind="text: jump_to ? PT.survey.getLabelById(jump_to) : false, valueUpdate:'input'"></span></p>
+          <p class="inline jump-to" data-bind="visible: came_from() != ''"><%= t(".jump-to") %>: <span data-bind="text: jump_to ? PT.survey.getLabelById(jump_to) : false, valueUpdate:'input'"></span></p>
         </div>
         <p class="subtle required-input" data-bind="visible: required()">
           * <%= t(".required") %>

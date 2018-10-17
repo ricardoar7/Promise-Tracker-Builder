@@ -31,7 +31,7 @@ PT.Input = function(){
   self.order = "";
   self.inEdit = ko.observable(true);
   self.jump_to = null;
-  self.came_from = null;
+  self.came_from = ko.observable("");
 
   self.validate = function(){
     var inputEl = $("#input" + self.id());
@@ -54,8 +54,17 @@ PT.Input = function(){
   };
 
   self.save = function(self){
+
+    console.log(self);
+
+    var jump = [];
     _.each(self.options(), function(option){
-      option.jump_to == undefined ? option.jump_to = null : false; });
+      if(option.jump_to == undefined){
+        option.jump_to = null;
+      } else {
+        jump.push(option);
+      }
+     });
 
     if(self.label().length > 0){
       $.ajax({
@@ -76,6 +85,9 @@ PT.Input = function(){
         self.validate();
         PT.checkErrors();
         PT.unsaved = false;
+        if(jump.length > 0){
+          PT.updateCameFrom(PT.survey.getInputById(jump[0].jump_to), self.label());
+        }
       });
     } else {
       var confirmed;
@@ -250,6 +262,12 @@ PT.SurveyModel = function(){
       return input.id() == id;
     })[0].label();
   }
+
+  self.getInputById = function(id){
+    return self.inputs().filter(function(input){
+      return input.id() == id;
+    })[0];
+  }
 };
 
 PT.getSurvey = function(id){
@@ -308,3 +326,24 @@ PT.buildJumpToArray = function(input){
   var currentIndex = _.indexOf(PT.survey.inputs(), input);
   return options.slice(currentIndex + 1);
 };
+
+PT.updateCameFrom = function(input, origin){
+
+  console.log(input);
+
+  input.came_from("Jumped from - " + origin);
+
+  input.save(input);
+
+  /*$.ajax({
+    url: Routes.survey_inputs_path(PT.survey.id),
+    type: "POST",
+    contentType: "application/json",
+    dataType: "json",
+    data: ko.toJSON(input)
+  })
+  .done(function(response) {
+
+    console.log(response);
+  });*/
+}
