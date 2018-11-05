@@ -30,7 +30,7 @@ class InputsController < ApplicationController
   private
 
   def input_params
-    params.require(:input).permit(:id, :survey_id, :label, :input_type, :options, :required, :order)
+    params.require(:input).permit(:id, :survey_id, :label, :input_type, :options, :required, :order, :back_to, :came_from)
   end
 
 end

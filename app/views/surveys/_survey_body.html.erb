@@ -80,7 +80,7 @@
             <%= t(".jump_to") %>:
           </div>
           <div class="col-md-9">
-            <select class="form-control short inline" data-bind="options: PT.buildJumpToArray(PT.selectedInput()), optionsValue: function(item) {return item.id}, optionsText: function(item) {return item.label;}, optionsCaption: I18n.t('surveys.survey_body.select_question'), value: jump_to, event: { change: function() { highlightActiveJumps($data, event) } }">
+            <select class="form-control short inline" data-bind="options: PT.buildJumpToArray(PT.selectedInput()), optionsValue: function(item) {return item.id}, optionsText: function(item) {return item.label;}, optionsCaption: I18n.t('surveys.survey_body.select_question'), value: back_to, event: { change: function() { highlightActiveJumps($data, event) } }">
             </select>
           </div>
         </div>
@@ -130,7 +130,6 @@
             <span class="glyphicon glyphicon-picture"></span>
           </p>
           <br>
-          <p class="inline jump-to" data-bind="visible: came_from() != ''"><%= t(".jump-to") %>: <span data-bind="text: jump_to ? PT.survey.getLabelById(jump_to) : false, valueUpdate:'input'"></span></p>
         </div>
         <p class="subtle required-input" data-bind="visible: required()">
           * <%= t(".required") %>

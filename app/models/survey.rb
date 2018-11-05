@@ -14,7 +14,7 @@ class Survey < ActiveRecord::Base
     request.body = self.to_json(
       only: [:id, :code, :title, :campaign_id],
       include: { 
-        inputs: { only: [:id, :label, :input_type, :order, :options, :required] }
+        inputs: { only: [:id, :label, :input_type, :order, :options, :required, :back_to, :came_from] }
       }
     )
 

@@ -30,7 +30,7 @@ PT.Input = function(){
   self.options = ko.observableArray([{label: I18n.t("surveys.survey_builder.option_1"), jump_to: null}]);
   self.order = "";
   self.inEdit = ko.observable(true);
-  self.jump_to = null;
+  self.back_to = ko.observable("");
   self.came_from = ko.observable("");
 
   self.validate = function(){
@@ -55,7 +55,7 @@ PT.Input = function(){
 
   self.save = function(self){
 
-    console.log(self);
+    console.log(self.back_to());
 
     var jump = [];
     _.each(self.options(), function(option){
@@ -86,7 +86,9 @@ PT.Input = function(){
         PT.checkErrors();
         PT.unsaved = false;
         if(jump.length > 0){
-          PT.updateCameFrom(PT.survey.getInputById(jump[0].jump_to), self.label());
+          for (var i in jump) {
+            PT.updateCameFrom(PT.survey.getInputById(jump[i].jump_to), self.label());
+          }
         }
       });
     } else {
@@ -101,6 +103,8 @@ PT.Input = function(){
   }
 
   self.map = function(data){
+    console.log("Olha a data ai");
+    console.log(data);
     self.id = ko.observable(data.id);
     self.survey_id = data.survey_id;
     self.label = ko.observable(data.label);
@@ -108,6 +112,8 @@ PT.Input = function(){
     self.required = ko.observable(data.required);
     self.order = data.order;
     self.inEdit = ko.observable(false);
+    self.back_to = ko.observable(data.back_to);
+    self.came_from = ko.observable(data.came_from);
 
     if(data.options){
       if(typeof(data.options[0]) == "string"){
@@ -258,6 +264,10 @@ PT.SurveyModel = function(){
   };
 
   self.getLabelById = function(id){
+    console.log(id);
+    if(id == -1){
+      return "Survey End";
+    }
     return self.inputs().filter(function(input){
       return input.id() == id;
     })[0].label();
@@ -324,7 +334,9 @@ PT.checkErrors = function(){
 PT.buildJumpToArray = function(input){
   var options = PT.survey.inputs().map(function(i, index){return {id: i.id(), label: index + 1 + ". " + i.label()}; });
   var currentIndex = _.indexOf(PT.survey.inputs(), input);
-  return options.slice(currentIndex + 1);
+  options.slice(currentIndex + 1);
+  options.push({id: -1, label: "Survey End"});
+  return options;
 };
 
 PT.updateCameFrom = function(input, origin){
@@ -334,16 +346,4 @@ PT.updateCameFrom = function(input, origin){
   input.came_from("Jumped from - " + origin);
 
   input.save(input);
-
-  /*$.ajax({
-    url: Routes.survey_inputs_path(PT.survey.id),
-    type: "POST",
-    contentType: "application/json",
-    dataType: "json",
-    data: ko.toJSON(input)
-  })
-  .done(function(response) {
-
-    console.log(response);
-  });*/
 }
